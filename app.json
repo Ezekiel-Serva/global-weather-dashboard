@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "LearningApp",
-    "slug": "LearningApp",
+    "name": "GlobalWeatherDashboard",
+    "slug": "GlobalWeatherDashboard",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "learningapp",
+    "icon": "./assets/images/gwd_logo.png",
+    "scheme": "globalweatherdashboard",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
