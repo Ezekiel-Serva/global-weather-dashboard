@@ -55,9 +55,22 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' },
-  title: { fontSize: 28, fontWeight: '700' },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16 },
+  container: { 
+    flex: 1, 
+    padding: 20, 
+    paddingTop: 60, 
+    backgroundColor: '#fff' 
+  },
+  title: { 
+    fontSize: 28, 
+    fontWeight: '700' 
+  },
+  searchRow: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 10, 
+    marginTop: 16 
+  },
   input: {
     flex: 1,
     borderWidth: 1,
@@ -73,6 +86,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
   },
-  buttonText: { color: '#fff', fontWeight: '600' },
+  buttonText: { 
+    color: '#fff', 
+    fontWeight: '600' 
+  },
 });
 

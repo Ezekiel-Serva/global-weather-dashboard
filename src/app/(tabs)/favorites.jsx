@@ -33,15 +33,30 @@ export default function FavoritesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' },
+  container: { 
+    flex: 1, 
+    padding: 20, 
+    paddingTop: 60, 
+    backgroundColor: '#fff' 
+  },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
   },
-  title: { fontSize: 28, fontWeight: '700' },
-  clearText: { color: '#e0433c', fontWeight: '600' },
-  empty: { color: '#888', textAlign: 'center', marginTop: 40 },
+  title: { 
+    fontSize: 28, 
+    fontWeight: '700' 
+  },
+  clearText: { 
+    color: '#e0433c', 
+    fontWeight: '600' 
+  },
+  empty: { 
+    color: '#888', 
+    textAlign: 'center', 
+    marginTop: 40 
+  },
 });
 
