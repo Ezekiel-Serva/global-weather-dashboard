@@ -1,62 +1,56 @@
-import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import CityCard from '../../components/CityCard';
-import { useFavorites } from '../../context/FavoritesContext';
+import React from 'react'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { SafeAreaView} from 'react-native-safe-area-context'
+import SampleCity from '../sampleCity'
 
-export default function FavoritesScreen() {
-  const router = useRouter();
-  const { favorites, clearFavorites } = useFavorites();
+const Favorites = () => {
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Favorites</Text>
-        {favorites.length > 0 && (
-          <Pressable onPress={clearFavorites}>
-            <Text style={styles.clearText}>Clear All</Text>
-          </Pressable>
-        )}
-      </View>
-
+    <SafeAreaView>
       <FlatList
-        data={favorites}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={
-          <Text style={styles.empty}>No favorites yet — tap the heart on a city to save it.</Text>
-        }
-        renderItem={({ item }) => (
-          <CityCard city={item} onPress={() => router.push(`/city/${item.id}`)} />
-        )}
+        data={SampleCity}
+        key={1}
+        numColumns={1}
+        keyExtractor={( item ) => item.city}
+        renderItem={({ item }) => {
+         return( 
+          <View style={styles.card}>
+            <View style={styles.city}>
+              <Text style={{fontWeight: 700}}>{item.city}</Text>
+              <Text>{item.country}</Text>
+            </View>
+  >
+            <View style={styles.temp}>
+              <Text>{item.temp}</Text> 
+              <Text>{item.condition}</Text>
+              <Text>{item.humidity}</Text>
+              <Text>{item.wind}</Text>
+            </View>
+          </View>
+          )
+        }}
+
+
       />
-    </View>
-  );
+    </SafeAreaView>
+  )
 }
 
+export default Favorites
+
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    padding: 20, 
-    paddingTop: 60, 
-    backgroundColor: '#fff' 
-  },
-  headerRow: {
+  card: {
+    flex: 1,
+    backgroundColor: '#e4e4e4',
+    padding: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
+    margin: 5,
+    elevation: 2,
+    borderRadius: 5
   },
-  title: { 
-    fontSize: 28, 
-    fontWeight: '700' 
-  },
-  clearText: { 
-    color: '#e0433c', 
-    fontWeight: '600' 
-  },
-  empty: { 
-    color: '#888', 
-    textAlign: 'center', 
-    marginTop: 40 
-  },
-});
+  city: {
+    padding: 5
+  }
 
+})

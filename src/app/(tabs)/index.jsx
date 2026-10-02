@@ -1,84 +1,47 @@
-import { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import React from 'react'
+import { Link, Stack } from 'expo-router'
+import { View, Text, StyleSheet,  } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-export default function HomeScreen() {
-  const [query, setQuery] = useState('');
-  const router = useRouter();
-
-  const handleSearch = () => {
-    if (!query.trim()) return;
-    // Passing the searched city name to Dashboard via route params
-    router.push({ pathname: '/dashboard', params: { city: query.trim() } });
-    setQuery('');
-  };
-
+const Index = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Global Weather</Text>
-
-      <View style={styles.searchRow}>
-        <TextInput
-          style={styles.input}
-          placeholder="Search a city..."
-          value={query}
-          onChangeText={setQuery}
-          returnKeyType="search"
-          onSubmitEditing={handleSearch}
-        />
-        <Pressable style={styles.button} onPress={handleSearch}>
-          <Text style={styles.buttonText}>Search</Text>
-        </Pressable>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.mainCont}>
+        <Text style={styles.header}>Global Weather Dashboard</Text>
+        <Text style={styles.description}>Future update: App will be able to fetch live weather data and saves a list of favorite cities.</Text>
       </View>
 
-      {/* Placeholder for quick-favorite shortcuts once AsyncStorage is wired */}
-      <Text style={styles.hint}>Your favorite cities will show here soon.</Text>
-    </View>
-  );
+    </SafeAreaView>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    padding: 20, 
-    paddingTop: 60, 
-    backgroundColor: '#fff' 
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: '700', 
-    marginBottom: 24 
-  },
-  searchRow: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 10 
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#2b7fff',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  buttonText: { 
-    color: '#fff', 
-    fontWeight: '600', 
-    fontSize: 16 
-  },
-  hint: { 
-    marginTop: 30, 
-    color: '#888', 
-    fontSize: 13, 
-    textAlign: 'center' 
-  },
-});
+export default Index
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#b7cadd',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center'
+  },
+  mainCont: {
+    backgroundColor: '#e9ecee',
+    height: 'auto',
+    width: 250,
+    borderWidth: 1,
+    padding: 5,
+    borderRadius: 5,
+    elevation: 3
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: 700,
+    textAlign: 'center',
+    paddingBottom: 7
+  },
+  description: {
+    color: '#424242',
+    textAlign: 'center',
+  }
+})

@@ -1,14 +1,11 @@
-import { Stack } from 'expo-router';
-import { FavoritesProvider } from '../context/FavoritesContext';
+import React from 'react'
+import { Stack } from 'expo-router'
+import { View, Text, StyleSheet } from 'react-native'
 
-export default function RootLayout() {
-  return (
-    <FavoritesProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="city/[id]" options={{ headerShown: true, title: 'Details' }} />
-      </Stack>
-    </FavoritesProvider>
-  );
+const RootLayout = () => {
+  return (<Stack screenOptions={{ headerShown: false}}/>)
 }
 
+export default RootLayout
+
+const styles = StyleSheet.create({})

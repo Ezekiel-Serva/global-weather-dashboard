@@ -1,94 +1,104 @@
-import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, FlatList, StyleSheet } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import CityCard from '../../components/CityCard';
-import { FAKE_CITIES } from '../../types/weather';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, FlatList, Pressable, TextInput } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import SampleCity from '../sampleCity'
 
-export default function DashboardScreen() {
-  const { city } = useLocalSearchParams();
-  const router = useRouter();
-  const [query, setQuery] = useState('');
-  // Stub: recent/current results start as fake data.
-  // Replace with real API results once weatherApi.js is wired in.
-  const [results, setResults] = useState(FAKE_CITIES);
-
-  useEffect(() => {
-    if (city) {
-      // TODO: replace with real API fetch by city name
-      console.log('Searched from Home:', city);
+const Dashboard = () => {
+  const [search, setSearch] = useState('')
+  const [favorites, setFavorites] = useState([])
+  const toggleFavorites = (city) => {
+    if (favorites.includes(city)) {
+      setFavorites(favorites.filter((c) => c !== city))
     }
-  }, [city]);
-
-  const handleSearch = () => {
-    if (!query.trim()) return;
-    // TODO: fetch real weather for `query` and prepend to results
-    setQuery('');
-  };
-
+    else {
+      setFavorites([...favorites, city])
+    }
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
-
-      <View style={styles.searchRow}>
-        <TextInput
-          style={styles.input}
-          placeholder="Search another city..."
-          value={query}
-          onChangeText={setQuery}
-          onSubmitEditing={handleSearch}
-        />
-        <Pressable style={styles.button} onPress={handleSearch}>
-          <Text style={styles.buttonText}>Go</Text>
-        </Pressable>
-      </View>
-
-      <FlatList
-        data={results}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <CityCard city={item} onPress={() => router.push(`/city/${item.id}`)} />
-        )}
-        contentContainerStyle={{ paddingTop: 16 }}
+    <SafeAreaView style={styles.container}>
+      {/* <Text style={styles.title}>Dashboard</Text> */}
+      <TextInput 
+        style={styles.input}
+        value={search}
+        onChangeText={setSearch}
+        placeholder="Search for a city"
+        autoCapitalize="words"
       />
-    </View>
-  );
+      
+      <View style={styles.cardCont}>
+      <FlatList
+        data={SampleCity}
+        key={1}
+        numColumns={1}
+        keyExtractor={( item ) => item.city}
+        renderItem={({ item }) => {
+          
+          const added = favorites.includes(item.city)
+          return (
+          <View style={styles.card}>
+            <View>
+              <Pressable
+                onPress={()=> toggleFavorites(item.city)}
+                >
+                <Text style={{color: 'red'}}>
+                  {added ? 'Added!' : 'Add to favorites'}
+                </Text>
+              </Pressable>
+              
+              <Text style={styles.cardCity}>{item.city}</Text>
+              <Text>{item.country}</Text>
+            </View>
+            <View>
+              <Text>{item.temp}°C</Text>
+              <Text>{item.condition}</Text>
+              <Text>{item.humidity}%</Text>
+              <Text>{item.wind}km/h</Text>
+            </View>
+          </View>
+          )
+        }}
+      />
+      </View>
+    </SafeAreaView>
+  )
 }
 
+export default Dashboard
+
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    padding: 20, 
-    paddingTop: 60, 
-    backgroundColor: '#fff' 
+  container: {
+    flex: 1,
+    padding: 10,
   },
-  title: { 
-    fontSize: 28, 
-    fontWeight: '700' 
+  title: {
+    fontSize: 18,
+    fontWeight: 700,
   },
-  searchRow: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 10, 
-    marginTop: 16 
+  card: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#eee',
+    borderWidth: 1,
+    borderRadius: 5,
+    elevation: 2,
+    margin: 5,
+    padding: 20,
+  },
+  cardCont: {
+    borderTopWidth: 2,
+    borderColor: '#7292a6'
+    
+  },
+  cardCity: {
+    fontSize: 20,
+    fontWeight: 'bolder'
   },
   input: {
-    flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#2b7fff',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  buttonText: { 
-    color: '#fff', 
-    fontWeight: '600' 
-  },
-});
+    borderRadius: 5,
+    marginVertical: 25,
+    marginTop: -20
 
+  }
+})
