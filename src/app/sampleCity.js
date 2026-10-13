@@ -7,6 +7,7 @@ const SampleCity = [
   { city: "New Delhi", country: "India", temp: 35, condition: "Hazy", humidity: 40, wind: 8 },
   { city: "Saitama", country: "Japan", temp: 22, condition: "Rainy", humidity: 80, wind: 15 },
   { city: "Quezon", country: "Philippines", temp: 30, condition: "Thunderstorm", humidity: 85, wind: 18 },
+  { city: "Nemek", country: "Planet Mars", temp: 99, condition: "End of the world", humidity: 99, wind: 99 },
 ]
 
 export default SampleCity
