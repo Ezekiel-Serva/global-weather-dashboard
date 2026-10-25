@@ -1,11 +1,23 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
 import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from '../../context/ThemeContext'
+
+
 
 const TabsLayout = () => {
+  const { theme } = useTheme()
   return (
-    <Tabs screenOptions={{ headerShown: true }}>
+    <Tabs  
+      screenOptions={{   
+      headerShown: true,
+      headerStyle: { backgroundColor: theme.card },
+      headerTintColor: theme.text,
+      tabBarStyle: { backgroundColor: theme.card, borderTopColor: theme.border },
+      tabBarActiveTintColor: theme.primary,
+      tabBarInactiveTintColor: theme.subText,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -47,5 +59,3 @@ const TabsLayout = () => {
 }
 
 export default TabsLayout
-
-const styles = StyleSheet.create({})

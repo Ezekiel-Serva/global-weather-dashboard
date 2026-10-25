@@ -1,16 +1,32 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { SafeAreaView} from 'react-native-safe-area-context'
+import { View, Text, StyleSheet, Switch } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '../../context/ThemeContext'
 
 const Settings = () => {
+  const { theme, isDark, toggleTheme } = useTheme()
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.generalCont}>
-        <View style={styles.header}><Text style={{fontWeight: 700, fontSize: 20}}>General</Text></View>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <View style={[styles.generalCont, { backgroundColor: theme.card, borderColor: theme.border }]}>
+        <View style={[styles.header, { backgroundColor: theme.primary }]}>
+          <Text style={{ fontWeight: '700', fontSize: 20, color: theme.onPrimary }}>General</Text>
+        </View>
         <View style={styles.genElemCont}>
-          <View style={styles.setting}><Text>Appearance</Text></View>
-          <View style={styles.setting}><Text>Contact us</Text></View>
-          <View style={styles.setting}><Text>About</Text></View>
+          <View style={[styles.setting, styles.row, { backgroundColor: theme.background }]}>
+            <Text style={{ color: theme.text }}>Dark mode</Text>
+            <Switch
+              value={isDark}
+              onValueChange={toggleTheme}
+              trackColor={{ true: theme.primary }}
+            />
+          </View>
+          <View style={[styles.setting, { backgroundColor: theme.background }]}>
+            <Text style={{ color: theme.text }}>Contact us</Text>
+          </View>
+          <View style={[styles.setting, { backgroundColor: theme.background }]}>
+            <Text style={{ color: theme.text }}>About</Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -20,29 +36,10 @@ const Settings = () => {
 export default Settings
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 10
-  },
-  generalCont: {
-    backgroundColor: '#d9d9d9',
-    borderWidth: 1,
-    height: 'auto',
-    borderRadius: 5
-  },
-  genElemCont: {
-    padding: 5,
-  },
-  header: {
-    backgroundColor: '#efefef',
-    padding: 10,
-    borderRadius: 5
-  },
-  setting: {
-    padding: 10,
-    margin: 5,
-    backgroundColor: '#c2c2c2',
-    borderRadius: 5
-  }
-
+  container: { flex: 1, padding: 10 },
+  generalCont: { borderWidth: 1, borderRadius: 10, overflow: 'hidden' },
+  genElemCont: { padding: 5 },
+  header: { padding: 12 },
+  setting: { padding: 12, margin: 5, borderRadius: 8 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 })

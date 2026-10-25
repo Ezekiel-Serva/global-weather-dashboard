@@ -1,16 +1,28 @@
 import React from 'react'
-import { Link, Stack } from 'expo-router'
-import { View, Text, StyleSheet,  } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from '../../context/ThemeContext'
 
 const Index = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.mainCont}>
-        <Text style={styles.header}>Global Weather Dashboard</Text>
-        <Text style={styles.description}>Future update: App will be able to fetch live weather data and saves a list of favorite cities.</Text>
-      </View>
+  const { theme } = useTheme()
 
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <View
+        style={[
+          styles.mainCont,
+          { backgroundColor: theme.card, borderColor: theme.border },
+        ]}
+      >
+        <Ionicons name="partly-sunny" size={48} color={theme.primary} />
+        <Text style={[styles.header, { color: theme.text }]}>
+          Global Weather Dashboard
+        </Text>
+        <Text style={[styles.description, { color: theme.subText }]}>
+          Search any city in the Philippines to see its live weather, and save your favorites.
+        </Text>
+      </View>
     </SafeAreaView>
   )
 }
@@ -20,28 +32,25 @@ export default Index
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b7cadd',
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center'
   },
   mainCont: {
-    backgroundColor: '#e9ecee',
-    height: 'auto',
-    width: 250,
+    width: 280,
     borderWidth: 1,
-    padding: 5,
-    borderRadius: 5,
-    elevation: 3
+    padding: 20,
+    borderRadius: 12,
+    elevation: 3,
+    alignItems: 'center',
   },
   header: {
-    fontSize: 18,
-    fontWeight: 700,
+    fontSize: 20,
+    fontWeight: '700',
     textAlign: 'center',
-    paddingBottom: 7
+    marginTop: 8,
+    paddingBottom: 7,
   },
   description: {
-    color: '#424242',
     textAlign: 'center',
-  }
+  },
 })

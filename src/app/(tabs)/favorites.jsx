@@ -1,56 +1,101 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
-import { SafeAreaView} from 'react-native-safe-area-context'
-import SampleCity from '../sampleCity'
+import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Ionicons } from '@expo/vector-icons'
+import { useFavorites } from '../../context/FavoritesContext'
+import { useTheme } from '../../context/ThemeContext'
+
 
 const Favorites = () => {
+  const { theme } = useTheme()
+  const { favorites, toggleFavorite } = useFavorites()
 
   return (
-    <SafeAreaView>
-      <FlatList
-        data={SampleCity}
-        key={1}
-        numColumns={1}
-        keyExtractor={( item ) => item.city}
-        renderItem={({ item }) => {
-         return( 
-          <View style={styles.card}>
-            <View style={styles.city}>
-              <Text style={{fontWeight: 700}}>{item.city}</Text>
-              <Text>{item.country}</Text>
-            </View>
-  >
-            <View style={styles.temp}>
-              <Text>{item.temp}</Text> 
-              <Text>{item.condition}</Text>
-              <Text>{item.humidity}</Text>
-              <Text>{item.wind}</Text>
-            </View>
+   <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+    {favorites.length === 0 && (
+      <Text style={[styles.empty, { color: theme.subText }]}>
+        No favorites yet. Add some from the Dashboard.
+      </Text>
+    )}
+
+    <FlatList
+      data={favorites}
+      keyExtractor={(item) => item.city}
+      renderItem={({ item }) => (
+        <View style={[styles.card, { backgroundColor: theme.card }]}>
+          <View style={styles.left}>
+            <Text style={[styles.cardCity, { color: theme.text }]}>{item.city}</Text>
+            <Text style={[styles.sub, { color: theme.subText }]}>{item.country}</Text>
+            <Pressable style={styles.favBtn} onPress={() => toggleFavorite(item)}>
+              <Ionicons name="heart-dislike-outline" size={20} color={theme.heart} />
+              <Text style={[styles.favText, { color: theme.heart }]}>Remove</Text>
+            </Pressable>
           </View>
-          )
-        }}
 
-
-      />
-    </SafeAreaView>
+          <View style={styles.right}>
+            <Text style={[styles.temp, { color: theme.primary }]}>{item.temp}°C</Text>
+            <Text style={[styles.condition, { color: theme.text }]}>{item.condition}</Text>
+            <Text style={[styles.sub, { color: theme.subText }]}>Humidity {item.humidity}%</Text>
+            <Text style={[styles.sub, { color: theme.subText }]}>Wind {item.wind} km/h</Text>
+          </View>
+        </View>
+      )}
+    />
+  </SafeAreaView>
   )
 }
 
 export default Favorites
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     flex: 1,
-    backgroundColor: '#e4e4e4',
-    padding: 6,
+    padding: 12,
+    backgroundColor: '#f2f4f7',
+  },
+  card: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 5,
+    backgroundColor: '#fff',
+    borderRadius: 12,
     elevation: 2,
-    borderRadius: 5
+    marginBottom: 10,
+    padding: 16,
   },
-  city: {
-    padding: 5
-  }
-
+  left: {
+    flex: 1,
+  },
+  right: {
+    alignItems: 'flex-end',
+  },
+  cardCity: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  sub: {
+    color: '#6b7785',
+    fontSize: 13,
+  },
+  temp: {
+    fontSize: 28,
+    fontWeight: '700',
+  },
+  condition: {
+    fontSize: 15,
+    marginBottom: 4,
+  },
+  favBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  favText: {
+    marginLeft: 4,
+    color: '#e0245e',
+  },
+  empty: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#6b7785',
+  },
 })

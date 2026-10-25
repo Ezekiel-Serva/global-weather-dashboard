@@ -1,11 +1,16 @@
 import React from 'react'
 import { Stack } from 'expo-router'
-import { View, Text, StyleSheet } from 'react-native'
+import { FavoritesProvider } from '../context/FavoritesContext'
+import { ThemeProvider } from '../context/ThemeContext'
 
 const RootLayout = () => {
-  return (<Stack screenOptions={{ headerShown: false}}/>)
+  return (
+    <ThemeProvider>
+      <FavoritesProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </FavoritesProvider>
+    </ThemeProvider>
+  )
 }
 
 export default RootLayout
-
-const styles = StyleSheet.create({})
