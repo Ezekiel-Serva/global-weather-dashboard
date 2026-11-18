@@ -1,28 +1,116 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  View, Text, StyleSheet, ScrollView, Pressable, RefreshControl,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { getWeatherForPlace, weatherIcon } from '../../services/weatherApi'
+import { useFavorites } from '../../context/FavoritesContext'
 import { useTheme } from '../../context/ThemeContext'
 
+const MANILA = {
+  id: 'manila-default',
+  name: 'Manila',
+  admin1: 'Metro Manila',
+  latitude: 14.5995,
+  longitude: 120.9842,
+}
+
 const Index = () => {
-  const { theme } = useTheme()
+  const router = useRouter()
+  const { theme, formatTemp } = useTheme()
+  const { favorites, refreshFavorites, refreshing } = useFavorites()
+  const [manila, setManila] = useState(null)
+  const [loadingDefault, setLoadingDefault] = useState(false)
+  const [error, setError] = useState('')
+
+  const loadManila = async () => {
+    setLoadingDefault(true)
+    setError('')
+    try {
+      setManila(await getWeatherForPlace(MANILA))
+    } catch (e) {
+      setError('Could not load weather. Check your connection.')
+    } finally {
+      setLoadingDefault(false)
+    }
+  }
+
+  useEffect(() => {
+    loadManila()
+  }, [])
+
+  const hasFavorites = favorites.length > 0
+  const featured = hasFavorites ? favorites[0] : manila
+  const onRefresh = hasFavorites ? refreshFavorites : loadManila
+  const isRefreshing = hasFavorites ? refreshing : loadingDefault
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-      <View
-        style={[
-          styles.mainCont,
-          { backgroundColor: theme.card, borderColor: theme.border },
-        ]}
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            colors={[theme.primary]}
+            tintColor={theme.primary}
+          />
+        }
       >
-        <Ionicons name="partly-sunny" size={48} color={theme.primary} />
-        <Text style={[styles.header, { color: theme.text }]}>
-          Global Weather Dashboard
+        <Text style={[styles.title, { color: theme.text }]}>Global Weather Dashboard</Text>
+        <Text style={[styles.label, { color: theme.subText }]}>
+          {hasFavorites ? 'Your top favorite' : 'Weather in Manila'}
         </Text>
-        <Text style={[styles.description, { color: theme.subText }]}>
-          Search any city in the Philippines to see its live weather, and save your favorites.
+
+        {error !== '' && <Text style={{ color: 'red', marginBottom: 8 }}>{error}</Text>}
+
+        {featured && (
+          <View style={[styles.hero, { backgroundColor: theme.card, borderColor: theme.border }]}>
+            <Ionicons name={weatherIcon(featured.condition)} size={72} color={theme.primary} />
+            <Text style={[styles.heroTemp, { color: theme.text }]}>
+              {formatTemp(featured.temp)}
+            </Text>
+            <Text style={[styles.heroCondition, { color: theme.primary }]}>
+              {featured.condition}
+            </Text>
+            <Text style={[styles.heroCity, { color: theme.text }]}>{featured.city}</Text>
+            <Text style={[styles.sub, { color: theme.subText }]}>{featured.country}</Text>
+
+            <View style={styles.statsRow}>
+              <Text style={[styles.sub, { color: theme.subText }]}>
+                Humidity {featured.humidity}%
+              </Text>
+              <Text style={[styles.sub, { color: theme.subText }]}>
+                Wind {featured.wind} km/h
+              </Text>
+            </View>
+          </View>
+        )}
+
+        <Text style={[styles.sub, { color: theme.subText, textAlign: 'center', marginTop: 10 }]}>
+          Pull down to refresh
         </Text>
-      </View>
+
+        <Pressable
+          style={[styles.btn, { backgroundColor: theme.primary }]}
+          onPress={() => router.push('/dashboard')}
+        >
+          <Ionicons name="search" size={18} color={theme.onPrimary} />
+          <Text style={[styles.btnText, { color: theme.onPrimary }]}>Search a city</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.btn, styles.btnOutline, { borderColor: theme.primary }]}
+          onPress={() => router.push('/favorites')}
+        >
+          <Ionicons name="heart" size={18} color={theme.primary} />
+          <Text style={[styles.btnText, { color: theme.primary }]}>
+            Favorites ({favorites.length})
+          </Text>
+        </Pressable>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -30,27 +118,31 @@ const Index = () => {
 export default Index
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container: { flex: 1 },
+  content: { padding: 16 },
+  title: { fontSize: 22, fontWeight: '700', textAlign: 'center' },
+  label: { textAlign: 'center', marginTop: 4, marginBottom: 14 },
+  hero: {
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 24,
+    elevation: 3,
+  },
+  heroTemp: { fontSize: 56, fontWeight: '700', marginTop: 8 },
+  heroCondition: { fontSize: 18, fontWeight: '600', marginBottom: 8 },
+  heroCity: { fontSize: 22, fontWeight: '700' },
+  sub: { fontSize: 13 },
+  statsRow: { flexDirection: 'row', gap: 16, marginTop: 12 },
+  btn: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 10,
+    padding: 14,
+    marginTop: 14,
+    gap: 8,
   },
-  mainCont: {
-    width: 280,
-    borderWidth: 1,
-    padding: 20,
-    borderRadius: 12,
-    elevation: 3,
-    alignItems: 'center',
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginTop: 8,
-    paddingBottom: 7,
-  },
-  description: {
-    textAlign: 'center',
-  },
+  btnOutline: { backgroundColor: 'transparent', borderWidth: 1.5 },
+  btnText: { fontSize: 16, fontWeight: '600' },
 })

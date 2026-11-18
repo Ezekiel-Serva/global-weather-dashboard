@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../context/ThemeContext'
 
 const Settings = () => {
-  const { theme, isDark, toggleTheme } = useTheme()
+  const { theme, isDark, toggleTheme, unit, toggleUnit } = useTheme()
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
@@ -12,7 +12,9 @@ const Settings = () => {
         <View style={[styles.header, { backgroundColor: theme.primary }]}>
           <Text style={{ fontWeight: '700', fontSize: 20, color: theme.onPrimary }}>General</Text>
         </View>
+        
         <View style={styles.genElemCont}>
+          
           <View style={[styles.setting, styles.row, { backgroundColor: theme.background }]}>
             <Text style={{ color: theme.text }}>Dark mode</Text>
             <Switch
@@ -21,6 +23,16 @@ const Settings = () => {
               trackColor={{ true: theme.primary }}
             />
           </View>
+
+          <View style={[styles.setting, styles.row, { backgroundColor: theme.background }]}>
+            <Text style={{ color: theme.text }}>Fahrenheit (°F)</Text>
+            <Switch
+              value={unit === 'F'}
+              onValueChange={toggleUnit}
+              trackColor={{ true: theme.primary }}
+            />
+          </View>
+          
           <View style={[styles.setting, { backgroundColor: theme.background }]}>
             <Text style={{ color: theme.text }}>Contact us</Text>
           </View>

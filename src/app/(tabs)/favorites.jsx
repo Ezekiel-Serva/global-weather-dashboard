@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Pressable, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { useFavorites } from '../../context/FavoritesContext'
@@ -7,8 +7,8 @@ import { useTheme } from '../../context/ThemeContext'
 
 
 const Favorites = () => {
-  const { theme } = useTheme()
-  const { favorites, toggleFavorite } = useFavorites()
+  const { theme, formatTemp } = useTheme()
+  const { favorites, toggleFavorite, refreshFavorites, refreshing } = useFavorites()
 
   return (
    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
@@ -20,7 +20,7 @@ const Favorites = () => {
 
     <FlatList
       data={favorites}
-      keyExtractor={(item) => item.city}
+      keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => (
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.left}>
@@ -33,13 +33,21 @@ const Favorites = () => {
           </View>
 
           <View style={styles.right}>
-            <Text style={[styles.temp, { color: theme.primary }]}>{item.temp}°C</Text>
+            <Text style={[styles.temp, { color: theme.primary }]}>{formatTemp(item.temp)}</Text>
             <Text style={[styles.condition, { color: theme.text }]}>{item.condition}</Text>
             <Text style={[styles.sub, { color: theme.subText }]}>Humidity {item.humidity}%</Text>
             <Text style={[styles.sub, { color: theme.subText }]}>Wind {item.wind} km/h</Text>
           </View>
         </View>
       )}
+      refreshControl={
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={refreshFavorites}
+        colors={[theme.primary]}
+        tintColor={theme.primary}
+      />
+      }
     />
   </SafeAreaView>
   )
