@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, Switch } from 'react-native'
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../context/ThemeContext'
+import { useRouter } from 'expo-router';
 
 const Settings = () => {
   const { theme, isDark, toggleTheme, unit, toggleUnit } = useTheme()
-
+  const router = useRouter()
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.generalCont, { backgroundColor: theme.card, borderColor: theme.border }]}>
@@ -32,13 +33,20 @@ const Settings = () => {
               trackColor={{ true: theme.primary }}
             />
           </View>
+
+          <TouchableOpacity
+            style={[styles.setting, { backgroundColor: theme.background }]}
+            onPress={() => router.push('/screens/contactsScreen')}          
+          >
+            <Text style={{ color: theme.text }}>Contact the dev</Text>
+          </TouchableOpacity>
           
-          <View style={[styles.setting, { backgroundColor: theme.background }]}>
-            <Text style={{ color: theme.text }}>Contact us</Text>
-          </View>
-          <View style={[styles.setting, { backgroundColor: theme.background }]}>
+          <TouchableOpacity 
+            style={[styles.setting, { backgroundColor: theme.background }]}
+            onPress={() => router.push('/screens/aboutScreen')}
+          >
             <Text style={{ color: theme.text }}>About</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
