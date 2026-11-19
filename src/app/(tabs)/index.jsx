@@ -59,9 +59,9 @@ const Index = () => {
           />
         }
       >
-        <Text style={[styles.title, { color: theme.text }]}>Global Weather Dashboard</Text>
+        <Text style={[styles.title, { color: theme.text }]}>PH Weather Dashboard</Text>
         <Text style={[styles.label, { color: theme.subText }]}>
-          {hasFavorites ? 'Your top favorite' : 'Weather in Manila'}
+          { hasFavorites ? 'Your top favorite' : 'Weather in Manila' }
         </Text>
 
         {error !== '' && <Text style={{ color: 'red', marginBottom: 8 }}>{error}</Text>}

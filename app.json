@@ -1,23 +1,22 @@
 {
   "expo": {
-    "name": "GlobalWeatherDashboard",
-    "slug": "GlobalWeatherDashboard",
+    "name": "PH Weather Dashboard",
+    "slug": "PHWeatherDashboard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/gwd_logo1_non_transp.png",
-    "scheme": "globalweatherdashboard",
+    "scheme": "phweatherdashboard",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/images/gwd_logo1_non_transp.png"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/gwd_logo1_non_transp.png",
+        "backgroundColor": "#FFFFFF"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ezekiel.phweatherdashboard"
     },
     "web": {
       "output": "static",
