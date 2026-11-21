@@ -3,9 +3,11 @@ import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '../../context/ThemeContext'
 
-
+{/*Layout for the Home, Dash, Fav, Settings*/}
 
 const TabsLayout = () => {
+  
+  {/*Theme for Dark/Light*/}
   const { theme } = useTheme()
   return (
     <Tabs  
@@ -18,6 +20,8 @@ const TabsLayout = () => {
       tabBarInactiveTintColor: theme.subText,
       }}
     >
+
+      {/*Home*/}
       <Tabs.Screen
         name="index"
         options={{
@@ -27,6 +31,8 @@ const TabsLayout = () => {
           ),
         }}
       />
+
+      {/*Dashboard*/}
       <Tabs.Screen
         name="dashboard"
         options={{
@@ -36,6 +42,8 @@ const TabsLayout = () => {
           ),
         }}
       />
+
+      {/*Favs*/}
       <Tabs.Screen
         name="favorites"
         options={{
@@ -45,6 +53,8 @@ const TabsLayout = () => {
           ),
         }}
       />
+
+      {/*Settings*/}
       <Tabs.Screen
         name="settings"
         options={{
