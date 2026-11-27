@@ -23,26 +23,26 @@ const Dashboard = () => {
 
   // The list of cities whose weather is shown on screen (the "search history")
   const [cities, setCities] = useState([])
-  
+
   // If a search finds many places with the same name, they are stored here so the user can pick one
   const [matches, setMatches] = useState([])
-  
+
   // true while we wait for the internet (shows "Loading...")
   const [loading, setLoading] = useState(false)
 
-  // Error message to show the user (empty text = no error)  
+  // Error message to show the user (empty text = no error)
   const [error, setError] = useState('')
-  
+
   // true while the user is pulling down to refresh
   const [refreshing, setRefreshing] = useState(false)
 
   // toggleFavorite = save/unsave a city, isFavorite = check if a city is already saved
   const { toggleFavorite, isFavorite } = useFavorites()
-  
+
   // theme = colors, formatTemp = converts the temperature to the user's chosen unit
   const { theme, formatTemp } = useTheme()
 
-  
+
   // ---------- FUNCTIONS ----------
 
   // Gets the weather of one chosen place and adds it to the list
@@ -55,11 +55,11 @@ const Dashboard = () => {
       // Only add the city if it's not already in the list (prevents duplicates)
       // New city goes to the top: [w, ...cities]
       if (!cities.some((c) => c.id === w.id)) setCities([w, ...cities])
-    
+
     } catch (e) {
       // Something went wrong (usually no internet)
       setError('Network error. Try again.')
-    
+
     } finally {
       // Runs either way: success or error
       setLoading(false)
@@ -75,13 +75,13 @@ const Dashboard = () => {
     setMatches([])
     try {
       const results = await searchPlaces(search.trim())
-      if (results.length === 0) setError('City not found in the Philippines')  // nothing found
-      else if (results.length === 1) await addPlace(results[0])                // exactly one → add it right away
-      else setMatches(results)                                                 // many → let the user choose
-    } 
+      if (results.length === 0) setError('City not found')        // nothing found
+      else if (results.length === 1) await addPlace(results[0])   // exactly one → add it right away
+      else setMatches(results)                                    // many → let the user choose
+    }
     catch (e) {
       setError('Network error. Try again.')
-    } 
+    }
     finally {
       setLoading(false)
     }
@@ -108,20 +108,20 @@ const Dashboard = () => {
 
   // Runs when the user pulls down the list: updates the weather of ALL cities
   const refreshCities = async () => {
-  setRefreshing(true) // show the spinner
-  // Refresh every city at the same time (Promise.all waits until all are done)
-  const updated = await Promise.all(
-    cities.map(async (c) => {
-      try {
-        return await refreshWeather(c) // new weather data
-      } catch (e) {
-        return c // if it fails, keep the old data so the city doesn't disappear
-      }
-    })
-  )
-  setCities(updated)     // replace the list with the updated data
-  setRefreshing(false)   // hide the spinner
-}
+    setRefreshing(true) // show the spinner
+    // Refresh every city at the same time (Promise.all waits until all are done)
+    const updated = await Promise.all(
+      cities.map(async (c) => {
+        try {
+          return await refreshWeather(c) // new weather data
+        } catch (e) {
+          return c // if it fails, keep the old data so the city doesn't disappear
+        }
+      })
+    )
+    setCities(updated)     // replace the list with the updated data
+    setRefreshing(false)   // hide the spinner
+  }
 
   // ---------- WHAT SHOWS ON SCREEN ----------
   return (
@@ -156,8 +156,8 @@ const Dashboard = () => {
           onPress={() => addPlace(m)}   // tapping a choice adds that city
         >
           <Text style={{ color: theme.text }}>
-            {/* Show the name, plus the province/region if it exists */}
-            {m.name}{m.admin1 ? `, ${m.admin1}` : ''}
+            {/* Show name, region and country (skips any that are missing) */}
+            {[m.name, m.admin1, m.country].filter(Boolean).join(', ')}
           </Text>
         </Pressable>
       ))}
@@ -178,12 +178,12 @@ const Dashboard = () => {
         keyExtractor={(item) => String(item.id)}    // unique key for each card
         // Pull-to-refresh feature
         refreshControl={
-        <RefreshControl
-        refreshing={refreshing}       // is the spinner showing?
-        onRefresh={refreshCities}     // what to do when the user pulls down
-        colors={[theme.primary]}      // spinner color (Android)
-        tintColor={theme.primary}     // spinner color (iOS)
-        />
+          <RefreshControl
+            refreshing={refreshing}       // is the spinner showing?
+            onRefresh={refreshCities}     // what to do when the user pulls down
+            colors={[theme.primary]}      // spinner color (Android)
+            tintColor={theme.primary}     // spinner color (iOS)
+          />
         }
         // How ONE city card looks (this runs once per city)
         renderItem={({ item }) => {

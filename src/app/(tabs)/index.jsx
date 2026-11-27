@@ -14,6 +14,7 @@ const CALBAYOG = {
    id: "calbayog-default",
    name: "Calbayog City",
    admin1: "Samar",
+   country: "Philippines",
    latitude: 12.0667,
    longitude: 124.6
 }
