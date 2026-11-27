@@ -1,10 +1,12 @@
 import { Stack } from 'expo-router'
+import { View } from 'react-native'
 import { useTheme } from '../../context/ThemeContext'
 
 export default function ScreensLayout(){
   const { theme } = useTheme()
   
-  return(
+  return(     
+   <View style={{flex: 1, backgroundColor: theme.background}}>
     <Stack 
       screenOptions={{
         headerStyle: { backgroundColor: theme.primary },
@@ -25,5 +27,6 @@ export default function ScreensLayout(){
       />
 
     </Stack>
+   </View>
   )
 }
