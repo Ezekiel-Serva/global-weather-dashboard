@@ -18,6 +18,7 @@ const Favorites = () => {
       </Text>
     )}
 
+   {/* renders added favs */}
     <FlatList
       data={favorites}
       keyExtractor={(item) => String(item.id)}

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "PH Weather Dashboard",
-    "slug": "PHWeatherDashboard",
+    "name": "Global Weather Dashboard",
+    "slug": "GlobalWeatherDashboard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/gwd_logo1_non_transp.png",
-    "scheme": "phweatherdashboard",
+    "scheme": "globalweatherdashboard",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/gwd_logo1_non_transp.png"
